@@ -1,0 +1,190 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${customer.id} ? 'Edit Customer' : 'Add Customer'"></title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+        .navbar {
+            background: linear-gradient(45deg, #2c3e50, #3498db);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            padding: 1rem 2rem;
+        }
+        .navbar-brand img {
+            max-height: 40px;
+            transition: transform 0.3s ease;
+        }
+        .navbar-brand img:hover {
+            transform: scale(1.1);
+        }
+        .nav-link {
+            color: #ecf0f1 !important;
+            font-weight: 400;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+        }
+        .nav-link:hover {
+            background-color: rgba(255,255,255,0.1);
+            color: #fff !important;
+        }
+        .nav-item {
+            margin: 0 1rem;
+        }
+        .navbar-nav {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+        }
+        .container-fluid {
+            max-width: 800px;
+            margin-top: 2rem;
+        }
+        .dashboard-card {
+            background: #fff;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .dashboard-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+        }
+        .main_page_title {
+            font-weight: 700;
+            color: #2c3e50;
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        .form-control {
+            border-radius: 8px;
+            border: 1px solid #ced4da;
+            padding: 0.75rem;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+        .form-control:focus {
+            border-color: #3498db;
+            box-shadow: 0 0 5px rgba(52,152,219,0.3);
+        }
+        .btn-primary {
+            background: linear-gradient(45deg, #3498db, #2980b9);
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+        .btn-secondary {
+            background: linear-gradient(45deg, #7f8c8d, #95a5a6);
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .btn-secondary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+        .error {
+            color: #e74c3c;
+            font-size: 0.9em;
+            margin-top: 0.5rem;
+            font-weight: 400;
+            display: block;
+        }
+        label {
+            color: #2c3e50;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+        @media (max-width: 768px) {
+            .navbar-brand img {
+                max-height: 30px;
+            }
+            .nav-link {
+                padding: 0.5rem 1rem;
+                font-size: 0.95rem;
+            }
+            .nav-item {
+                margin: 0 0.5rem;
+            }
+            .navbar-nav {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            .main_page_title {
+                font-size: 1.5rem;
+            }
+            .navbar {
+                padding: 0.75rem 1rem;
+            }
+            .form-control {
+                padding: 0.5rem;
+            }
+            .btn-primary, .btn-secondary {
+                padding: 0.5rem 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-dark">
+        <a class="navbar-brand" th:href="@{/dashboard}"><img src="/images/crm-logo.png" alt="CRM Logo" onerror="this.src='https://via.placeholder.com/40?text=Logo';"></a>
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/dashboard}">Dashboard</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/customers}">View Customers</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/logout}">Logout</a>
+            </li>
+        </ul>
+    </nav>
+    <div class="container-fluid mt-4">
+        <div class="dashboard-card">
+            <h2 class="main_page_title" th:text="${customer.id} ? 'Edit Customer' : 'Add Customer'"></h2>
+            <form th:action="@{/customers/save}" th:object="${customer}" method="post">
+                <input type="hidden" th:field="*{id}"/>
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <input type="text" th:field="*{name}" class="form-control" id="name" placeholder="Enter name" required>
+                    <div class="error" th:errors="*{name}"></div>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" th:field="*{email}" class="form-control" id="email" placeholder="Enter email" required>
+                    <div class="error" th:errors="*{email}"></div>
+                </div>
+                <div class="form-group">
+                    <label for="phone">Phone</label>
+                    <input type="text" th:field="*{phone}" class="form-control" id="phone" placeholder="Enter phone">
+                    <div class="error" th:errors="*{phone}"></div>
+                </div>
+                <button type="submit" class="btn btn-primary">Save</button>
+                <a th:href="@{/customers}" class="btn btn-secondary">Cancel</a>
+            </form>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

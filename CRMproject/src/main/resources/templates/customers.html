@@ -1,0 +1,260 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Customer List</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+        .navbar {
+            background: linear-gradient(45deg, #2c3e50, #3498db);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            padding: 1rem 2rem;
+        }
+        .navbar-brand img {
+            max-height: 40px;
+            transition: transform 0.3s ease;
+        }
+        .navbar-brand img:hover {
+            transform: scale(1.1);
+        }
+        .nav-link {
+            color: #ecf0f1 !important;
+            font-weight: 400;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+        }
+        .nav-link:hover {
+            background-color: rgba(255,255,255,0.1);
+            color: #fff !important;
+        }
+        .nav-item {
+            margin: 0 1rem;
+        }
+        .navbar-nav {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+        }
+        .container-fluid {
+            max-width: 1200px;
+            margin-top: 2rem;
+        }
+        .dashboard-card {
+            background: #fff;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .dashboard-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+        }
+        .main_page_title {
+            font-weight: 700;
+            color: #2c3e50;
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        .btn-primary {
+            background: linear-gradient(45deg, #3498db, #2980b9);
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+        .btn-warning, .btn-danger {
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            transition: transform 0.2s ease;
+        }
+        .btn-warning:hover, .btn-danger:hover {
+            transform: translateY(-2px);
+        }
+        .table {
+            background: #fff;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .table thead {
+            background: #2c3e50;
+            color: #fff;
+        }
+        .table th, .table td {
+            padding: 1rem;
+            vertical-align: middle;
+        }
+        .table tbody tr {
+            transition: background 0.2s ease;
+        }
+        .table tbody tr:hover {
+            background: #f8f9fa;
+        }
+        .form-control {
+            border-radius: 8px;
+            border: 1px solid #ced4da;
+            transition: border-color 0.2s ease;
+        }
+        .form-control:focus {
+            border-color: #3498db;
+            box-shadow: 0 0 5px rgba(52,152,219,0.3);
+        }
+        .input-group-append .btn {
+            border-radius: 0 8px 8px 0;
+        }
+        .pagination .page-link {
+            border-radius: 5px;
+            margin: 0 0.3rem;
+            color: #2c3e50;
+            transition: all 0.2s ease;
+        }
+        .pagination .page-link:hover {
+            background: #3498db;
+            color: #fff;
+        }
+        .pagination .active .page-link {
+            background: #3498db;
+            border-color: #3498db;
+            color: #fff;
+        }
+        @media (max-width: 768px) {
+            .navbar-brand img {
+                max-height: 30px;
+            }
+            .nav-link {
+                padding: 0.5rem 1rem;
+                font-size: 0.95rem;
+            }
+            .nav-item {
+                margin: 0 0.5rem;
+            }
+            .navbar-nav {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            .main_page_title {
+                font-size: 1.5rem;
+            }
+            .btn-primary {
+                padding: 0.5rem 1rem;
+            }
+            .table th, .table td {
+                padding: 0.75rem;
+                font-size: 0.9rem;
+            }
+            .navbar {
+                padding: 0.75rem 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-dark">
+        <a class="navbar-brand" th:href="@{/dashboard}"><img src="/images/crm-logo.png" alt="CRM Logo"></a>
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/dashboard}">Dashboard</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/customers}">View Customers</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/logout}">Logout</a>
+            </li>
+        </ul>
+    </nav>
+    <div class="container-fluid mt-4">
+        <div class="dashboard-card">
+            <h2 class="main_page_title">Customer List</h2>
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <a th:href="@{/customers/add}" class="btn btn-primary">Add New Customer</a>
+                </div>
+                <div class="col-md-6">
+                    <form th:action="@{/customers}" method="get" class="form-inline justify-content-end">
+                        <div class="input-group">
+                            <input type="text" name="search" class="form-control" placeholder="Search by name" th:value="${search}">
+                            <div class="input-group-append">
+                                <button type="submit" class="btn btn-primary">Search</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="customer : ${customers}">
+                        <td th:text="${customer.id}"></td>
+                        <td th:text="${customer.name}"></td>
+                        <td th:text="${customer.email}"></td>
+                        <td th:text="${customer.phone}"></td>
+                        <td>
+                            <a th:href="@{/customers/edit/{id}(id=${customer.id})}" class="btn btn-warning btn-sm">Edit</a>
+                            <a th:href="@{/customers/delete/{id}(id=${customer.id})}" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this customer?')">Delete</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div th:if="${page.totalPages > 1}" class="d-flex justify-content-center">
+                <nav aria-label="Page navigation">
+                    <ul class="pagination">
+                        <li class="page-item" th:classappend="${page.number == 0} ? 'disabled'">
+                            <a class="page-link" th:href="@{/StephanieReflections/src/test/java/com/example/ThymeleafApplicationTests.java
+
+package com.example;
+
+import org.junit.jupiter1.6.0_65.testcase.TestCase;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.web.servlet.MockMvc;
+Truncated end of ThymeleafApplicationTests.java
+/customeers(page=${page.number - 1}, search=${search})}" aria-label="Previous">
+                                <span aria-hidden="ThymeleafApplicationTests.java
+
+package com.example;
+
+import org.junit.jupiter1.6.0_65.testcase.TestCase;
+Truncated end of ThymeleafApplicationTests.java
+true">«</span>
+                            </a>
+                        </li>
+                        <li class="page-item" th:each="i : ${#numbers.sequence(0, page.totalPages - 1)}" th:classappend="${i == page.number} ? 'active'">
+                            <a class="page-link" th:href="@{/customers(page=${i}, search=${search})}" th:text="${i + 1}"></a>
+                        </li>
+                        <li class="page-item" th:classappend="${page.number == page.totalPages - 1} ? 'disabled'">
+                            <a class="page-link" th:href="@{/customers(page=${page.number + 1}, search=${search})}" aria-label="Next">
+                                <span aria-hidden="true">»</span>
+                            </a>
+                        </li>
+                    </script>
+                </nav>
+            </div>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
