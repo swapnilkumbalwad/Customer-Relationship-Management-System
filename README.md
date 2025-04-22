@@ -209,8 +209,3 @@ Contributions are welcome! Please fork the repository and submit a pull request 
 
 
 
-Built with guidance from the xAI Grok 3 team.
-
-
-
-Inspired by Spring Boot best practices and community resources.
